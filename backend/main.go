@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/Pauloo27/shop/db"
 	"github.com/Pauloo27/shop/router"
 	"github.com/Pauloo27/shop/utils"
 	"github.com/gofiber/fiber/v2"
@@ -18,6 +19,7 @@ func main() {
 	}
 
 	port := os.Getenv("SHOP_BACKEND_PORT")
+	db.Connect()
 
 	app := fiber.New()
 
