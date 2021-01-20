@@ -7,6 +7,7 @@ import (
 	"github.com/Pauloo27/shop/utils"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 var Database *gorm.DB
@@ -14,8 +15,14 @@ var Database *gorm.DB
 func Connect() error {
 	var err error
 
+	// silent logger
+	silent := logger.New(nil, logger.Config{LogLevel: logger.Silent})
+
 	// connect
-	Database, err = gorm.Open(sqlite.Open("database.sqlite"), &gorm.Config{})
+	Database, err = gorm.Open(sqlite.Open("database.sqlite"), &gorm.Config{
+		Logger: silent,
+	})
+
 	if err != nil {
 		return err
 	}
