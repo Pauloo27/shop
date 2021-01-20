@@ -1,9 +1,11 @@
 package router
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/Pauloo27/shop/controllers/auth"
+	"github.com/gofiber/fiber/v2"
+)
 
 func RouteFor(app *fiber.App) {
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello World")
-	})
+	// Auth
+	app.Post("/v1/login", auth.Login)
 }
