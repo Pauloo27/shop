@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/Pauloo27/shop/router"
 	"github.com/Pauloo27/shop/utils"
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
@@ -20,9 +21,7 @@ func main() {
 
 	app := fiber.New()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello Fiber")
-	})
+	router.RouteFor(app)
 
 	app.Listen(utils.Fmt(":%s", port))
 }
