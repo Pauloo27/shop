@@ -1,4 +1,5 @@
 import {useCallback, useEffect, useState} from "react";
+import cn from "classnames";
 import SaleViewer from "../components/SaleViewer";
 import API from "../services/API";
 
@@ -25,9 +26,47 @@ export default function Sales() {
     return sales.map(sale => <SaleViewer key={sale.ID} sale={sale} />);
   }, [sales]);
 
+  const changePage = useCallback(
+    (pageOffset) => {
+      return setPage((prev) =>
+        Math.max(1, Math.min(lastPage, prev + pageOffset))
+      );
+    },
+    [setPage, lastPage]
+  );
+
+  const listPages = useCallback(() => {
+    const pages = [];
+    for (let i = 1; i <= lastPage; i++) {
+      pages.push(i);
+    }
+    return pages.map((i) => (
+      <li key={i} className={cn("page-item", { active: i === page })}>
+        <button onClick={() => setPage(i)} className="page-link">
+          {i}
+        </button>
+      </li>
+    ));
+  }, [page, lastPage, setPage]);
+
   return (
     <div className="container">
       <h3>Vendas</h3>
+      <nav aria-label="Page navigation example">
+        <ul className="pagination">
+          <li className="page-item">
+            <button onClick={() => changePage(-1)} className="page-link">
+              &laquo;
+            </button>
+          </li>
+          {listPages()}
+          <li className="page-item">
+            <button onClick={() => changePage(+1)} className="page-link">
+              &raquo;
+            </button>
+          </li>
+        </ul>
+      </nav>
       {listSales()}
     </div>
   );
