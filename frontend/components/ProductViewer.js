@@ -2,7 +2,7 @@ import cn from "classnames";
 import { useCallback, useState } from "react";
 import API from "../services/API";
 
-export default function ProductViewer({ product, edit, sell }) {
+export default function ProductViewer({ product, edit, sell, refresh }) {
   const [amount, setAmount] = useState(product.Amount);
   const [alert, setAlert] = useState(undefined);
 
@@ -15,9 +15,11 @@ export default function ProductViewer({ product, edit, sell }) {
   }, [setAmount, setAlert]);
 
   const doDelete = useCallback(() => {
-    API.delete(`/products/${product.ID}/`, { productid: product.ID }).catch(() => {
-      setAlert("Não foi possível efetuar a venda.");
-    });
+    API.delete(`/products/${product.ID}/`, { productid: product.ID })
+      .then(() => refresh())
+      .catch(() => {
+        setAlert("Não foi possível efetuar a venda.");
+      });
   }, [setAmount, setAlert]);
 
   const showSell = useCallback(() => {

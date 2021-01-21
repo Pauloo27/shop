@@ -37,6 +37,7 @@ export default function Products() {
         product={product}
         sell={false}
         edit={true}
+        refresh={fetchProducts}
       />
     ));
   }, [products]);
