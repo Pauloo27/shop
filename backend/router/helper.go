@@ -27,3 +27,10 @@ func requireGuest(c *fiber.Ctx) error {
 	}
 	return utils.AsError(c, fiber.StatusForbidden, "Já autenticado")
 }
+
+func requireAdmin(c *fiber.Ctx) error {
+	if c.Locals("user_admin").(bool) {
+		return c.Next()
+	}
+	return utils.AsError(c, fiber.StatusForbidden, "Permissão insuficiente")
+}
