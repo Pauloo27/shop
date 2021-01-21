@@ -7,8 +7,9 @@ export default function ProductViewer({ product, edit, sell }) {
   const [alert, setAlert] = useState(undefined);
 
   const doSell = useCallback(() => {
+    if(amount === 0) return;
+    setAmount((prev) => prev - 1);
     API.post("/sales/", { productid: product.ID })
-      .then(() => setAmount((prev) => prev - 1))
       .catch(() => {
         setAlert("Não foi possível efetuar a venda.");
       });
