@@ -45,7 +45,7 @@ func Login(c *fiber.Ctx) error {
 	}
 
 	if secret == "" {
-		secret = os.Getenv("SHOP_SECRET")
+		secret = os.Getenv("SHOP_JWT_SECRET")
 	}
 
 	token := jwt.New(jwt.SigningMethodHS256)
