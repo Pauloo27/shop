@@ -1,6 +1,10 @@
 package utils
 
-import "github.com/go-playground/validator"
+import (
+	"strings"
+
+	"github.com/go-playground/validator"
+)
 
 type ValidationError struct {
 	Field, Error string
@@ -23,4 +27,10 @@ func Validate(a interface{}) *[]*ValidationError {
 	}
 
 	return &errs
+}
+
+func IsNotUnique(err error) bool {
+	// FIXME
+	// There's no gorm.ErrUnique... so... raw string check?
+	return strings.HasPrefix(err.Error(), "UNIQUE constraint failed:")
 }

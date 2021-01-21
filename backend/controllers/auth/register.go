@@ -27,9 +27,7 @@ func Register(c *fiber.Ctx) error {
 
 	err := db.Database.Create(&newUser).Error
 	if err != nil {
-		// FIXME
-		// There's no gorm.ErrUnique... so... raw string check?
-		if err.Error() == "UNIQUE constraint failed: users.name" {
+		if utils.IsNotUnique(err) {
 			return utils.AsError(c, fiber.StatusConflict, "Nome já em uso")
 		}
 		panic(err)
