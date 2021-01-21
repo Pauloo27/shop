@@ -3,6 +3,7 @@ module github.com/Pauloo27/shop
 go 1.15
 
 require (
+	github.com/form3tech-oss/jwt-go v3.2.2+incompatible
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/gofiber/fiber/v2 v2.3.3
