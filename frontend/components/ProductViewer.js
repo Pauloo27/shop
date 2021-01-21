@@ -7,12 +7,17 @@ export default function ProductViewer({ product, edit, sell }) {
   const [alert, setAlert] = useState(undefined);
 
   const doSell = useCallback(() => {
-    if(amount === 0) return;
+    if (amount === 0) return;
     setAmount((prev) => prev - 1);
-    API.post("/sales/", { productid: product.ID })
-      .catch(() => {
-        setAlert("Não foi possível efetuar a venda.");
-      });
+    API.post("/sales/", { productid: product.ID }).catch(() => {
+      setAlert("Não foi possível efetuar a venda.");
+    });
+  }, [setAmount, setAlert]);
+
+  const doDelete = useCallback(() => {
+    API.delete(`/products/${product.ID}/`, { productid: product.ID }).catch(() => {
+      setAlert("Não foi possível efetuar a venda.");
+    });
   }, [setAmount, setAlert]);
 
   const showSell = useCallback(() => {
@@ -21,6 +26,17 @@ export default function ProductViewer({ product, edit, sell }) {
       <button onClick={doSell} className="btn btn-primary">
         Vender
       </button>
+    );
+  }, []);
+
+  const showEdit = useCallback(() => {
+    if (!edit) return null;
+    return (
+      <>
+        <button onClick={doDelete} className="btn btn-danger">
+          Apagar
+        </button>
+      </>
     );
   }, []);
 
@@ -43,7 +59,10 @@ export default function ProductViewer({ product, edit, sell }) {
             {product.Name} - R${product.Price.toFixed(2)}
           </span>
         </div>
-        <div>{showSell()}</div>
+        <div>
+          {showSell()}
+          {showEdit()}
+        </div>
       </div>
     </>
   );
