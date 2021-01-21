@@ -2,7 +2,6 @@ package auth
 
 import (
 	"errors"
-	"os"
 	"time"
 
 	"github.com/Pauloo27/shop/db"
@@ -13,15 +12,8 @@ import (
 	"gorm.io/gorm"
 )
 
-type LoginPayload struct {
-	Name     string `validate:"required,min=3,max=32"`
-	Password string `validate:"required,min=5,max=32"`
-}
-
-var secret string
-
 func Login(c *fiber.Ctx) error {
-	payload := new(LoginPayload)
+	payload := new(AuthPayload)
 
 	if err := c.BodyParser(payload); err != nil {
 		return c.SendStatus(fiber.ErrBadRequest.Code)
@@ -44,10 +36,6 @@ func Login(c *fiber.Ctx) error {
 		panic(err)
 	}
 
-	if secret == "" {
-		secret = os.Getenv("SHOP_JWT_SECRET")
-	}
-
 	token := jwt.New(jwt.SigningMethodHS256)
 
 	// Set claims
@@ -56,7 +44,7 @@ func Login(c *fiber.Ctx) error {
 	claims["admin"] = user.IsAdmin
 	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
 
-	t, err := token.SignedString([]byte(secret))
+	t, err := token.SignedString([]byte(getSecret()))
 	if err != nil {
 		panic(err)
 	}

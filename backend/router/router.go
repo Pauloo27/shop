@@ -8,4 +8,5 @@ import (
 func RouteFor(app *fiber.App) {
 	// Auth
 	app.Post("/v1/login", requireGuest, auth.Login)
+	app.Post("/v1/register", requireAuth, requireAdmin, auth.Register)
 }
