@@ -13,5 +13,5 @@ func RouteFor(app *fiber.App) {
 
 	// User
 	app.Put("/v1/users/", requireAuth, users.Update)
-	//app.Put("/v1/users/:id", requireAuth, requireAdmin, users.UpdateOther)
+	app.Put("/v1/users/:id", requireAuth, requireAdmin, users.UpdateOther)
 }
