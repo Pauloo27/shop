@@ -8,6 +8,7 @@ import (
 	"github.com/Pauloo27/shop/router"
 	"github.com/Pauloo27/shop/utils"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	jwtware "github.com/gofiber/jwt/v2"
 	"github.com/joho/godotenv"
 )
@@ -21,9 +22,15 @@ func main() {
 
 	port := os.Getenv("SHOP_BACKEND_PORT")
 	secret := os.Getenv("SHOP_JWT_SECRET")
+	frontend := os.Getenv("SHOP_FRONTEND")
 	db.Connect()
 
 	app := fiber.New()
+
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: frontend,
+		AllowHeaders: "Origin, Content-Type, Accept",
+	}))
 
 	app.Use(jwtware.New(jwtware.Config{
 		SigningKey: []byte(secret),
