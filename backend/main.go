@@ -29,7 +29,7 @@ func main() {
 
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: frontend,
-		AllowHeaders: "Origin, Content-Type, Accept",
+		AllowHeaders: "Origin, Content-Type, Accept, Authorization",
 	}))
 
 	app.Use(jwtware.New(jwtware.Config{
