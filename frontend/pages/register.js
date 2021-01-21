@@ -20,8 +20,28 @@ export default function Register() {
   }, [registerStatus]);
 
   const doRegister = useCallback(() => {
-    console.log("Register");
-  });
+    API.post("/register/", {
+      name: usernameRef.current.value,
+      password: passwordRef.current.value,
+    })
+      .then((res) => {
+        if ("response" in res && res.response.status !== 200) {
+          setRegisterStatus({
+            type: "danger",
+            msg: "Usuário ou senha inválidos",
+          });
+          return;
+        }
+        setRegisterStatus(true);
+      })
+      .catch((err) => {
+        console.log(err);
+        setRegisterStatus({
+          type: "danger",
+          msg: "Usuário ou senha inválidos",
+        });
+      });
+  }, [setRegisterStatus]);
 
   return (
     <div className={General.content_container}>
