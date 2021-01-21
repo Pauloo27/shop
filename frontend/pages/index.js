@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import ProductViewer from "../components/ProductViewer";
 import API from "../services/API";
+import cn from "classnames";
 
 export default function Home() {
   const [products, setProducts] = useState(undefined);
@@ -11,7 +12,12 @@ export default function Home() {
     setProducts(undefined);
     API.get(`/products?page=${page}`)
       .then((res) => {
-        setProducts(res.data);
+        if ("response" in res && res.response.status === 404) {
+          setProducts([]);
+          return;
+        }
+        setProducts(res.data.products);
+        setLastPage(res.data.last_page);
       })
       .catch(console.log);
   }, [page, setProducts]);
@@ -28,31 +34,48 @@ export default function Home() {
     ));
   }, [products]);
 
+  const changePage = useCallback(
+    (pageOffset) => {
+      return setPage((prev) =>
+        Math.max(1, Math.min(lastPage, prev + pageOffset))
+      );
+    },
+    [setPage, lastPage]
+  );
+
   const listPages = useCallback(() => {
     const pages = [];
-    for(let i = 1; i <= lastPage; i++) {
+    for (let i = 1; i <= lastPage; i++) {
       pages.push(i);
     }
-    return pages.map(i => {
-      return <li class="page-item"><button class="page-link">{i}</button></li>
-    });
-  }, [page, lastPage]);
+    return pages.map((i) => (
+      <li key={i} className={cn("page-item", { active: i === page })}>
+        <button onClick={() => setPage(i)} className="page-link">
+          {i}
+        </button>
+      </li>
+    ));
+  }, [page, lastPage, setPage]);
 
   return (
     <div className="container">
       <h3>Produtos</h3>
-      {showProducts()}
       <nav aria-label="Page navigation example">
         <ul className="pagination">
           <li className="page-item">
-            <button className="page-link">&laquo;</button>
+            <button onClick={() => changePage(-1)} className="page-link">
+              &laquo;
+            </button>
           </li>
           {listPages()}
           <li className="page-item">
-            <button className="page-link">&raquo;</button>
+            <button onClick={() => changePage(+1)} className="page-link">
+              &raquo;
+            </button>
           </li>
         </ul>
       </nav>
+      {showProducts()}
     </div>
   );
 }
