@@ -39,5 +39,5 @@ func Login(c *fiber.Ctx) error {
 		panic(err)
 	}
 
-	return c.SendString("ok")
+	return utils.AsJSON(c, fiber.StatusOK, fiber.Map{"jwt": "lol"})
 }
