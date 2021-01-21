@@ -20,4 +20,5 @@ func RouteFor(app *fiber.App) {
 	app.Post("/v1/products/", requireAuth, requireAdmin, products.Store)
 	app.Delete("/v1/products/:id", requireAuth, requireAdmin, products.Delete)
 	app.Get("/v1/products/", requireAuth, products.Index)
+	app.Put("/v1/products/:id", requireAuth, requireAdmin, products.Update)
 }
