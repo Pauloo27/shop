@@ -31,7 +31,7 @@ func UpdateOther(c *fiber.Ctx) error {
 		panic(err)
 	}
 	if user.IsAdmin {
-		return utils.AsMsg(c, fiber.StatusAccepted, "Usuário promovido")
+		return utils.AsMsg(c, fiber.StatusOK, "Usuário promovido")
 	}
-	return utils.AsMsg(c, fiber.StatusAccepted, "Usuário não é mais admin")
+	return utils.AsMsg(c, fiber.StatusOK, "Usuário não é mais admin")
 }

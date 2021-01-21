@@ -46,5 +46,5 @@ func Update(c *fiber.Ctx) error {
 	if err != nil {
 		panic(err)
 	}
-	return utils.AsMsg(c, fiber.StatusAccepted, "Senha alterada")
+	return utils.AsMsg(c, fiber.StatusOK, "Senha alterada")
 }
