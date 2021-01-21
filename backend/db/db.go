@@ -30,6 +30,7 @@ func Connect() error {
 	// migrate models
 	Database.AutoMigrate(&models.User{})
 	Database.AutoMigrate(&models.Product{})
+	Database.AutoMigrate(&models.Sale{})
 
 	// create default admin user
 	var user models.User
