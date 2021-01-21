@@ -39,7 +39,7 @@ func Update(c *fiber.Ctx) error {
 		return utils.AsError(c, fiber.StatusForbidden, "Confirmação de senha inválida")
 	}
 
-	err = db.Database.Model(user).Update("Password",
+	err = db.Database.Model(&user).Update("Password",
 		utils.HashPassword(payload.NewPassword),
 	).Error
 
