@@ -18,19 +18,14 @@ func UpdateOther(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.ErrBadRequest.Code)
 	}
 
-	id := c.Params("id", "")
+	rawID := c.Params("id", "")
 
-	var user models.User
-	err := db.Database.First(&user, id).Error
+	err := db.Database.Model(&models.User{}).Where("id = ?", rawID).Update("IsAdmin", payload.IsAdmin).Error
 	if err != nil {
 		panic(err)
 	}
 
-	err = db.Database.Model(&user).Update("IsAdmin", payload.IsAdmin).Error
-	if err != nil {
-		panic(err)
-	}
-	if user.IsAdmin {
+	if payload.IsAdmin {
 		return utils.AsMsg(c, fiber.StatusOK, "Usuário promovido")
 	}
 	return utils.AsMsg(c, fiber.StatusOK, "Usuário não é mais admin")
