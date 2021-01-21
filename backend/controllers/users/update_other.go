@@ -8,7 +8,7 @@ import (
 )
 
 type UpdateOtherPayload struct {
-	IsAdmin string `validate:"required,eq=true|eq=false"`
+	IsAdmin bool
 }
 
 func UpdateOther(c *fiber.Ctx) error {
@@ -16,11 +16,6 @@ func UpdateOther(c *fiber.Ctx) error {
 
 	if err := c.BodyParser(payload); err != nil {
 		return c.SendStatus(fiber.ErrBadRequest.Code)
-	}
-
-	errs := utils.Validate(payload)
-	if errs != nil {
-		return c.JSON(errs)
 	}
 
 	id := c.Params("id", "")
@@ -31,7 +26,7 @@ func UpdateOther(c *fiber.Ctx) error {
 		panic(err)
 	}
 
-	err = db.Database.Model(&user).Update("IsAdmin", payload.IsAdmin == "true").Error
+	err = db.Database.Model(&user).Update("IsAdmin", payload.IsAdmin).Error
 	if err != nil {
 		panic(err)
 	}
