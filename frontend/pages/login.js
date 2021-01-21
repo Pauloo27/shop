@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from "react";
+import { useRouter } from "next/router";
 import API from "../services/API";
 import General from "../styles/General.module.css";
 
@@ -6,21 +7,24 @@ export default function Login() {
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
   const [loginStatus, setLoginStatus] = useState(undefined);
+  const router = useRouter();
 
   const showLoginStatus = useCallback(() => {
     if (loginStatus === undefined) return null;
+    if (loginStatus === true) router.push("/");
     return (
       <span className={`text-${loginStatus.type}`}>{loginStatus.msg}</span>
     );
   }, [loginStatus]);
 
   const doLogin = useCallback(() => {
+    localStorage.removeItem("jwt");
     API.post("/login/", {
       name: usernameRef.current.value,
       password: passwordRef.current.value,
     })
       .then((res) => {
-        setLoginStatus({ type: "success", msg: "Logado!" });
+        setLoginStatus(true);
         localStorage.setItem("jwt", res.data.jwt);
       })
       .catch((err) => {
