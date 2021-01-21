@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/Pauloo27/shop/controllers/auth"
 	"github.com/Pauloo27/shop/controllers/products"
+	"github.com/Pauloo27/shop/controllers/sales"
 	"github.com/Pauloo27/shop/controllers/users"
 	"github.com/gofiber/fiber/v2"
 )
@@ -21,4 +22,8 @@ func RouteFor(app *fiber.App) {
 	app.Delete("/v1/products/:id", requireAuth, requireAdmin, products.Delete)
 	app.Get("/v1/products/", requireAuth, products.Index)
 	app.Put("/v1/products/:id", requireAuth, requireAdmin, products.Update)
+
+	// Sale
+	app.Post("/v1/sales/", requireAuth, sales.Store)
+	//app.Get("/v1/sales/", requireAuth, requireAdmin, sales.Index)
 }
