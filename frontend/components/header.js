@@ -3,9 +3,9 @@ import Link from "next/link";
 export default function Header() {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">
-        Ínicio
-      </a>
+      <Link href="/">
+        <span class="navbar-brand">Ínicio</span>
+      </Link>
       <button
         class="navbar-toggler"
         type="button"
