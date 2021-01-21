@@ -43,7 +43,7 @@ export default function Login() {
           type="text"
           autoComplete="off"
           className="form-control mt-1"
-          placeholder="Usuário"
+          placeholder="Nome"
         />
         <input
           ref={passwordRef}
