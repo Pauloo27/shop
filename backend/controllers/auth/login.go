@@ -21,6 +21,7 @@ func Login(c *fiber.Ctx) error {
 
 	errs := utils.Validate(payload)
 	if errs != nil {
+		c.Response().SetStatusCode(fiber.StatusBadRequest)
 		return c.JSON(errs)
 	}
 
