@@ -25,5 +25,5 @@ func RouteFor(app *fiber.App) {
 
 	// Sale
 	app.Post("/v1/sales/", requireAuth, sales.Store)
-	//app.Get("/v1/sales/", requireAuth, requireAdmin, sales.Index)
+	app.Get("/v1/sales/", requireAuth, requireAdmin, sales.Index)
 }
