@@ -17,7 +17,9 @@ export default function Home() {
 
   const showProducts = useCallback(() => {
     if (products === undefined) return <span>Carregando...</span>;
-    return products.map(product => <ProductViewer product={product} edit={false}/>)
+    return products.map((product) => (
+      <ProductViewer key={product.ID} product={product} sell={true} edit={false} />
+    ));
   }, [products]);
 
   return (
