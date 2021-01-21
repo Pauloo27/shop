@@ -31,7 +31,7 @@ func Login(c *fiber.Ctx) error {
 
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return utils.AsError(c, fiber.StatusNotFound, "User not found")
+			return utils.AsError(c, fiber.StatusNotFound, "Usuário não encontrado")
 		}
 		panic(err)
 	}
