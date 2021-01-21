@@ -30,7 +30,7 @@ func Index(c *fiber.Ctx) error {
 	}
 
 	var sales []models.Sale
-	err = db.Database.Preload("Product").Where("id > ?", PAGE_SIZE*(page-1)).
+	err = db.Database.Preload("Product").Preload("User").Where("id > ?", PAGE_SIZE*(page-1)).
 		Limit(PAGE_SIZE).Find(&sales).Error
 	if err != nil {
 		panic(err)
