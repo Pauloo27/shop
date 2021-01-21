@@ -16,6 +16,7 @@ func requireAuth(c *fiber.Ctx) error {
 		claims := user.Claims.(jwt.MapClaims)
 		c.Locals("user_name", claims["name"].(string))
 		c.Locals("user_admin", claims["admin"].(bool))
+		c.Locals("user_id", int(claims["id"].(float64)))
 		return c.Next()
 	}
 	return utils.AsError(c, fiber.StatusForbidden, "Não autenticado")
