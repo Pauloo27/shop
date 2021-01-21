@@ -24,8 +24,23 @@ func Store(c *fiber.Ctx) error {
 		return c.JSON(errs)
 	}
 
+	var product models.Product
+	err := db.Database.Find(&product, payload.ProductID).Error
+	if err != nil {
+		panic(err)
+	}
+
+	if product.Amount <= 0 {
+		return utils.AsError(c, fiber.StatusNotFound, "Não disponível em estoque")
+	}
+
+	err = db.Database.Model(&product).Update("Amount", product.Amount-1).Error
+	if err != nil {
+		panic(err)
+	}
+
 	sale := models.Sale{UserID: c.Locals("user_id").(int), ProductID: payload.ProductID}
-	err := db.Database.Create(&sale).Error
+	err = db.Database.Create(&sale).Error
 	if err != nil {
 		panic(err)
 	}
