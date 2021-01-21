@@ -1,6 +1,15 @@
 import Link from "next/link";
+import { useCallback } from "react";
+import { useRouter } from "next/router";
 
 export default function Header() {
+  const router = useRouter();
+
+  const logout = useCallback(() => {
+    localStorage.removeItem("jwt");
+    router.reload();
+  });
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <Link href="/">
@@ -19,7 +28,7 @@ export default function Header() {
               aria-haspopup="true"
               aria-expanded="false"
             >
-              Gerenciar
+              Opções
             </a>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
               <Link href="/products/">
@@ -28,9 +37,12 @@ export default function Header() {
               <Link href="/sales/">
                 <span className="dropdown-item">Vendas</span>
               </Link>
-              <Link href="/users/">
-                <span className="dropdown-item">Usuários</span>
+              <Link href="/register/">
+                <span className="dropdown-item">Cadastrar usuário</span>
               </Link>
+              <button className="dropdown-item" onClick={logout}>
+                Sair
+              </button>
             </div>
           </li>
         </ul>
