@@ -74,7 +74,11 @@ export default function Products() {
       return;
     }
     API.post("/products/", { name: nameRef.current.value, price })
-      .then(() => {
+      .then((res) => {
+        if ("response" in res && res.response.status === 409) {
+          setAlert({ type: "danger", msg: "Não foi possível criar" });
+          return;
+        }
         fetchProducts();
       })
       .catch((err) => {
