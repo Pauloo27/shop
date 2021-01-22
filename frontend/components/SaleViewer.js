@@ -5,7 +5,7 @@ export default function SaleViewer({ sale }) {
     <h4>
       <span className="text-primary">{sale.User.Name}</span> vendeu um{" "}
       <span className="text-primary">{sale.Product.Name} </span>
-      por <span className="text-primary">R${sale.Product.Price}</span> dia{" "}
+      por <span className="text-primary">R${sale.Product.Price.toFixed(2).toString().replace(".", ",")}</span> dia{" "}
       <span className="text-primary">{date}</span> às{" "}
       <span className="text-primary">{time}</span>.
     </h4>
