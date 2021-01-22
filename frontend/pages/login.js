@@ -24,6 +24,10 @@ export default function Login() {
       password: passwordRef.current.value,
     })
       .then((res) => {
+        if ("response" in res && res.response.status !== 200) {
+          setLoginStatus({ type: "danger", msg: "Usuário ou senha inválidos" });
+          return;
+        }
         setLoginStatus(true);
         localStorage.setItem("jwt", res.data.jwt);
       })
