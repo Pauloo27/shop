@@ -1,7 +1,8 @@
-import { useState, useRef, useCallback } from "react";
-import { useRouter } from "next/router";
-import API from "../services/API";
-import General from "../styles/General.module.css";
+"use client";
+import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
+import API from "../../services/API";
+import General from "../../styles/General.module.css";
 
 export default function Login() {
   const usernameRef = useRef(null);
@@ -9,15 +10,15 @@ export default function Login() {
   const [loginStatus, setLoginStatus] = useState(undefined);
   const router = useRouter();
 
-  const showLoginStatus = useCallback(() => {
+  const showLoginStatus = () => {
     if (loginStatus === undefined) return null;
     if (loginStatus === true) router.push("/");
     return (
       <span className={`text-${loginStatus.type}`}>{loginStatus.msg}</span>
     );
-  }, [loginStatus]);
+  };
 
-  const doLogin = useCallback(() => {
+  const doLogin = () => {
     localStorage.removeItem("jwt");
     API.post("/login/", {
       name: usernameRef.current.value,
@@ -35,7 +36,7 @@ export default function Login() {
         console.log(err);
         setLoginStatus({ type: "danger", msg: "Usuário ou senha inválidos" });
       });
-  }, [setLoginStatus]);
+  };
 
   return (
     <div className={General.content_container}>

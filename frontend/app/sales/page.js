@@ -1,49 +1,39 @@
-import { useState, useCallback, useEffect } from "react";
-import ProductViewer from "../components/ProductViewer";
-import API from "../services/API";
+"use client";
+import { useEffect, useState } from "react";
 import cn from "classnames";
+import SaleViewer from "../../components/SaleViewer";
+import API from "../../services/API";
 
-export default function Home() {
-  const [products, setProducts] = useState(undefined);
+export default function Sales() {
+  const [sales, setSales] = useState(undefined);
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
 
   useEffect(() => {
-    setProducts(undefined);
-    API.get(`/products?page=${page}`)
+    API.get(`/sales?page=${page}`)
       .then((res) => {
         if ("response" in res && res.response.status === 404) {
-          setProducts([]);
+          setSales([]);
           return;
         }
-        setProducts(res.data.products);
+        setSales(res.data.sales);
         setLastPage(res.data.last_page);
       })
       .catch(console.log);
-  }, [page, setProducts]);
+  }, [setSales, page]);
 
-  const showProducts = useCallback(() => {
-    if (products === undefined) return <span>Carregando...</span>;
-    return products.map((product) => (
-      <ProductViewer
-        key={product.ID}
-        product={product}
-        sell={true}
-        edit={false}
-      />
-    ));
-  }, [products]);
+  const listSales = () => {
+    if (sales === undefined) return <span>Carregando...</span>;
+    return sales.map((sale) => <SaleViewer key={sale.ID} sale={sale} />);
+  };
 
-  const changePage = useCallback(
-    (pageOffset) => {
-      return setPage((prev) =>
-        Math.max(1, Math.min(lastPage, prev + pageOffset))
-      );
-    },
-    [setPage, lastPage]
-  );
+  const changePage = (pageOffset) => {
+    return setPage((prev) =>
+      Math.max(1, Math.min(lastPage, prev + pageOffset))
+    );
+  };
 
-  const listPages = useCallback(() => {
+  const listPages = () => {
     const pages = [];
     for (let i = 1; i <= lastPage; i++) {
       pages.push(i);
@@ -55,11 +45,11 @@ export default function Home() {
         </button>
       </li>
     ));
-  }, [page, lastPage, setPage]);
+  };
 
   return (
     <div className="container">
-      <h3>Produtos</h3>
+      <h3>Vendas</h3>
       <nav aria-label="Page navigation example">
         <ul className="pagination">
           <li className="page-item">
@@ -75,7 +65,7 @@ export default function Home() {
           </li>
         </ul>
       </nav>
-      {showProducts()}
+      {listSales()}
     </div>
   );
 }

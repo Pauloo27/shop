@@ -1,7 +1,8 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+"use client";
+import { useState, useEffect, useRef } from "react";
 import cn from "classnames";
-import API from "../services/API";
-import ProductViewer from "../components/ProductViewer";
+import API from "../../services/API";
+import ProductViewer from "../../components/ProductViewer";
 
 export default function Products() {
   const [products, setProducts] = useState(undefined);
@@ -11,7 +12,7 @@ export default function Products() {
   const nameRef = useRef(undefined);
   const priceRef = useRef(undefined);
 
-  const fetchProducts = useCallback(() => {
+  const fetchProducts = () => {
     setProducts(undefined);
     API.get(`/products?page=${page}`)
       .then((res) => {
@@ -23,13 +24,13 @@ export default function Products() {
         setLastPage(res.data.last_page);
       })
       .catch(console.log);
-  }, [page, setProducts]);
+  };
 
   useEffect(() => {
     fetchProducts();
-  }, [page, fetchProducts]);
+  }, [page]);
 
-  const showProducts = useCallback(() => {
+  const showProducts = () => {
     if (products === undefined) return <span>Carregando...</span>;
     return products.map((product) => (
       <ProductViewer
@@ -40,18 +41,15 @@ export default function Products() {
         refresh={fetchProducts}
       />
     ));
-  }, [products]);
+  };
 
-  const changePage = useCallback(
-    (pageOffset) => {
-      return setPage((prev) =>
-        Math.max(1, Math.min(lastPage, prev + pageOffset))
-      );
-    },
-    [setPage, lastPage]
-  );
+  const changePage = (pageOffset) => {
+    return setPage((prev) =>
+      Math.max(1, Math.min(lastPage, prev + pageOffset))
+    );
+  };
 
-  const listPages = useCallback(() => {
+  const listPages = () => {
     const pages = [];
     for (let i = 1; i <= lastPage; i++) {
       pages.push(i);
@@ -63,9 +61,9 @@ export default function Products() {
         </button>
       </li>
     ));
-  }, [page, lastPage, setPage]);
+  };
 
-  const doCreate = useCallback(() => {
+  const doCreate = () => {
     setAlert(undefined);
     const priceStr = priceRef.current.value.replace(",", ".");
     const price = Number.parseFloat(priceStr);
@@ -85,7 +83,7 @@ export default function Products() {
         setAlert({ type: "danger", msg: "Não foi possível criar" });
         console.log(err);
       });
-  }, [setAlert, nameRef, priceRef, setPage, page]);
+  };
 
   return (
     <div className="container">

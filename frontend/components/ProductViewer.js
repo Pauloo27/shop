@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { useCallback, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import General from "../styles/General.module.css";
 import API from "../services/API";
 
@@ -9,23 +9,23 @@ export default function ProductViewer({ product, edit, sell, refresh }) {
   const [canSave, setCanSave] = useState(false);
   const amountRef = useRef(undefined);
 
-  const doSell = useCallback(() => {
+  const doSell = () => {
     if (amount === 0) return;
     setAmount((prev) => prev - 1);
     API.post("/sales/", { productid: product.ID }).catch(() => {
       setAlert("Não foi possível efetuar a venda.");
     });
-  }, [setAmount, setAlert]);
+  };
 
-  const doDelete = useCallback(() => {
+  const doDelete = () => {
     API.delete(`/products/${product.ID}/`)
       .then(() => refresh())
       .catch(() => {
         setAlert("Não foi possível efetuar a venda.");
       });
-  }, [setAlert]);
+  };
 
-  const doSave = useCallback(() => {
+  const doSave = () => {
     API.put(`/products/${product.ID}/`, {
       amount: Number.parseInt(amountRef.current.value, 10),
       price: product.Price,
@@ -34,18 +34,18 @@ export default function ProductViewer({ product, edit, sell, refresh }) {
       .catch(() => {
         setAlert("Não foi possível efetuar a venda.");
       });
-  }, [setAlert, amountRef]);
+  };
 
-  const showSell = useCallback(() => {
+  const showSell = () => {
     if (!sell) return null;
     return (
       <button onClick={doSell} className="btn btn-primary">
         Vender
       </button>
     );
-  }, []);
+  };
 
-  const showEdit = useCallback(() => {
+  const showEdit = () => {
     if (!edit) return null;
     return (
       <>
@@ -59,9 +59,9 @@ export default function ProductViewer({ product, edit, sell, refresh }) {
         </button>
       </>
     );
-  }, [canSave]);
+  };
 
-  const showAmount = useCallback(() => {
+  const showAmount = () => {
     if (edit) {
       return (
         <div className="d-inline mr-3">
@@ -85,7 +85,7 @@ export default function ProductViewer({ product, edit, sell, refresh }) {
         {amount}
       </span>
     );
-  }, [amount]);
+  };
 
   return (
     <>

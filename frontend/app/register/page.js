@@ -1,7 +1,8 @@
-import { useRef, useState, useCallback } from "react";
-import { useRouter } from "next/router";
-import API from "../services/API";
-import General from "../styles/General.module.css";
+"use client";
+import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import API from "../../services/API";
+import General from "../../styles/General.module.css";
 
 export default function Register() {
   const usernameRef = useRef(null);
@@ -9,7 +10,7 @@ export default function Register() {
   const [registerStatus, setRegisterStatus] = useState(undefined);
   const router = useRouter();
 
-  const showRegisterStatus = useCallback(() => {
+  const showRegisterStatus = () => {
     if (registerStatus === undefined) return null;
     if (registerStatus === true) router.push("/");
     return (
@@ -17,9 +18,9 @@ export default function Register() {
         {registerStatus.msg}
       </span>
     );
-  }, [registerStatus]);
+  };
 
-  const doRegister = useCallback(() => {
+  const doRegister = () => {
     API.post("/register/", {
       name: usernameRef.current.value,
       password: passwordRef.current.value,
@@ -41,7 +42,7 @@ export default function Register() {
           msg: "Usuário ou senha inválidos",
         });
       });
-  }, [setRegisterStatus]);
+  };
 
   return (
     <div className={General.content_container}>

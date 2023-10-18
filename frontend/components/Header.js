@@ -1,14 +1,14 @@
+"use client";
 import Link from "next/link";
-import { useCallback } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
   const router = useRouter();
 
-  const logout = useCallback(() => {
+  const logout = () => {
     localStorage.removeItem("jwt");
-    router.reload();
-  });
+    router.push("/login");
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
