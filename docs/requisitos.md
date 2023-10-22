@@ -6,7 +6,7 @@
 
 2. **Cadastro de Usuário:**
    - O primeiro usuário (_admin_), poderá cadastrar novos usuários no sistema.
-   - Os _admin_ devem fornecer um _username_ e uma senha para cadastrar um novo usuário.
+   - O _admin_ deve fornecer um _username_ e uma senha para cadastrar um novo usuário.
 
 3. **Cadastro de Produtos:**
    - O _admin_ deve ser capaz de cadastrar novos produtos no sistema.
@@ -27,12 +27,14 @@
 # Requisitos Não Funcionais:
 
 1. **Segurança:**
-   - O sistema deve garantir a segurança das informações dos usuários, especialmente senhas, usando hashs e jwt.
+   - O sistema deve garantir a segurança das informações dos usuários, especialmente senhas, usando _hashs_ e _jwt_.
    - Deve ser implementada uma camada de segurança, como CORS e HTTPS (exceto em localhost), para proteger a comunicação entre o frontend e o backend.
+   - A senha deve ter no mínimo 6 caracteres.
 
 2. **Desempenho:**
    - O sistema deve ser responsivo e eficiente, evitando atrasos significativos na carga de páginas e na realização de ações.
    - Deve ser otimizado para lidar com um grande número de produtos e vendas, se necessário.
+   - Os dados fornecidos devem ser paginados para evitar sobrecarga do sistema.
 
 3. **Usabilidade:**
    - A interface do usuário (UI) deve ser amigável e intuitiva, de modo que os usuários possam facilmente realizar as tarefas desejadas.
@@ -40,8 +42,8 @@
 
 4. **Compatibilidade:**
    - O sistema deve ser compatível com navegadores modernos, como Chrome, Firefox.
-   - Deve ser responsivo para diferentes tamanhos de tela, incluindo dispositivos móveis.
+   - Deve ser responsivo o suficiente para diferentes tamanhos de tela, incluindo dispositivos móveis.
 
 5. **Tecnologias:**
-   - O _frontend_ do sistema deve ser feito usando Javascript, React e NestJS.
-   - O _backend_ do sistema deve ser feito usando _Golang_ e um banco _SQL_.
+   - O _frontend_ do sistema deve ser feito usando Javascript, React e NextJS.
+   - O _backend_ do sistema deve ser feito usando _Golang_ e um banco _SQL_ (sqlite).
